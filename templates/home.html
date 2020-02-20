@@ -1,0 +1,48 @@
+<!-- templates/home.html-->
+
+{% extends 'base.html' %}
+
+{% block breadcrumbs %}
+  <ol class="breadcrumb">
+    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+    <!--
+    <li><a href="#">Forms</a></li>
+    <li class="active">General Elements</li>
+  -->
+  </ol>
+{% endblock %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+    <section class="content">
+        <b>Welcome, {{ user.username }}!</b>
+        <ul>
+            <ul>By clicking somewhere left, you will be able to:
+                <li>
+                    Perform reconnaissance actions 
+                </li>
+                <li>
+                    Scan your target
+                </li>
+                <li>
+                    Set up gophish on EC2 instances
+                </li>
+                <li>
+                    Set up a Cloufront distribution enabling domain-fronting (one click)
+                </li>
+                <li>
+                    Receive incoming connections from domain-fronting configured RATs, & issue nice commands to them
+                </li>
+            </ul>
+        </ul>
+
+        <b>Actions course: see README on repo</b>
+        <p><a href="{% url 'logout' %}">logout</a></p>
+    </section>
+{% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'login' %}">login</a>
+{% endif %}
+{% endblock %}

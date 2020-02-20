@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Abaddon - Cloudfront deployment dashboard{% endblock %}
+
+{% block content %}
+
+        <div class="box box-warning">
+            <div class="box-header with-border">
+              <h3 class="box-title">Cloudfront deployment dashboard</h3>
+            </div>
+
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+          </div>
+          
+            <div class="box-body">
+              <form role="form" action="" method="POST">
+                {% csrf_token %}
+                <!-- Domain to deliver -->
+                <div class="form-group">
+                  <label>Domain name distributed by cloudfront (can't be an S3 location)</label>
+                  <input type="text" name="domain" class="form-control" placeholder="www.mysuperdomain.com">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+                <!-- Created distributionS -->
+
+              <table id="cloudfront-table" class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                  <th>Distribution's ID</th>
+                  <th>Deployment status</th>
+                  <th>Distribution's domain name</th>
+                  <th>Origins configuration</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for distrib in all_distrib %}
+                  <tr>
+                    <td>{{ distrib.0 }}</td>
+                    <td>{{ distrib.1 }}</td>
+                    <td>{{ distrib.2 }}</td>
+                    <td>{{ distrib.3 }}</td>
+                  </tr>
+                {% endfor %}
+                </tbody>
+                <!--<tfoot>
+                <tr>
+                  <th>Distribution's ID</th>
+                  <th>Deployment status</th>
+                  <th>Distribution's domain name</th>
+                  <th>Origins configuration</th>
+                </tr>
+                </tfoot>-->
+              </table>
+
+            </div>
+        </div>
+
+{% endblock %}

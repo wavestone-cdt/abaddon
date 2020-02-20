@@ -1,0 +1,116 @@
+version: '2.3'
+
+services:
+    elasticsearch:
+        restart: always
+        image: redelk_elasticsearch:$ELK_VERSION
+        stdin_open: true
+        tty: true
+        build:
+            context: elasticsearch/
+            args:
+                ELK_VERSION: $ELK_VERSION
+        volumes:
+            - "/etc/timezone:/etc/timezone:ro"
+            - "/etc/localtime:/etc/localtime:ro"
+#           - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+#           - esdata1:/usr/share/elasticsearch/data
+            - esdata2:/usr/share/elasticsearch/data
+        environment:
+            - transport.host=localhost
+            - transport.tcp.port=9300 
+            - http.port=9200
+            - network.host=0.0.0.0
+            - "ES_JAVA_OPTS=-Xmx2048m -Xms2048m"
+        networks:
+            - elk
+
+    logstash:
+        restart: always
+        image: redelk_logstash:$ELK_VERSION
+        stdin_open: true
+        tty: true
+        build:
+            context: logstash/
+            args:
+                ELK_VERSION: $ELK_VERSION
+        volumes:
+            - "./conf/logstash/conf.d/:/usr/share/logstash/pipeline/"
+            - "./conf/logstash/ruby-scripts/:/etc/logstash/ruby-scripts/"
+            - "/etc/timezone:/etc/timezone:ro"
+            - "/etc/localtime:/etc/localtime:ro"
+        environment:
+            LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+        networks:
+            - elk
+        depends_on:
+            - elasticsearch
+
+    kibana:
+        restart: always
+        image: redelk_kibana:$ELK_VERSION
+        stdin_open: true
+        tty: true
+        build:
+            context: kibana/
+            args:
+                ELK_VERSION: $ELK_VERSION
+        volumes:
+            - "/etc/timezone:/etc/timezone:ro"
+            - "/etc/localtime:/etc/localtime:ro"
+#           - ./kibana/config/:/usr/share/kibana/config:ro
+        networks:
+            - elk
+        depends_on:
+            - elasticsearch
+          
+    redelk:
+        restart: always
+        image: redelk_redelk:0.8.0
+        stdin_open: true
+        tty: true
+        build:
+            context: redelk/
+        volumes:
+            - "/srv/prod/:/opt/cslogs/"
+            - "/etc/timezone:/etc/timezone:ro"
+            - "/etc/localtime:/etc/localtime:ro"
+        networks:
+            - elk
+        depends_on:
+            - elasticsearch
+            - logstash
+            - kibana
+ 
+    nginx:
+        restart: always
+        image: redelk_nginx:$ELK_VERSION
+        stdin_open: true
+        tty: true
+        build:
+            context: nginx/
+        volumes:
+            - "/etc/timezone:/etc/timezone:ro"
+            - "/etc/localtime:/etc/localtime:ro"
+            - "/srv/prod/:/var/www/html/cslogs/:ro"
+            - "./conf/nginx/htpasswd.users:/etc/nginx/htpasswd.users"
+        networks:
+            - elk
+        depends_on:
+            - elasticsearch
+            - logstash
+            - kibana
+
+networks:
+  elk:
+    driver: bridge
+    name: elk
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.19.0.0/16
+        gateway: 172.19.0.1
+
+volumes:
+  esdata2:
+      driver: local

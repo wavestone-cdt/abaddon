@@ -1,0 +1,16 @@
+FROM amazonlinux:2
+
+RUN amazon-linux-extras install nginx1.12 > /dev/null
+
+COPY nginx.conf /etc/nginx/
+
+ARG IP_target=127.0.0.1
+ARG httpPort=80
+ARG sslPort=443
+
+#Customisation du fichier de configuration via les --build-arg
+RUN sed -i -r "s:IP_target\\$\\$:${IP_target}:" /etc/nginx/nginx.conf
+RUN sed -i -r "s:httpPort\\$\\$:${httpPort}:" /etc/nginx/nginx.conf
+RUN sed -i -r "s:sslPort\\$\\$:${sslPort}:" /etc/nginx/nginx.conf
+
+CMD ["nginx", "-g", "daemon off;"]

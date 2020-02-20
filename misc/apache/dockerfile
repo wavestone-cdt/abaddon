@@ -1,0 +1,31 @@
+FROM ubuntu:18.04
+
+RUN apt-get update && \
+	apt-get install -y --no-install-recommends software-properties-common &&\
+	add-apt-repository -y ppa:ondrej/apache2 && \
+	apt-get update && \
+	apt-get install -y --no-install-recommends apache2 && \
+	apt-get clean
+
+
+
+COPY apache2.conf /etc/apache2/
+COPY 000-default.conf /etc/apache2/sites-available/
+COPY default-ssl.conf /etc/apache2/sites-available/
+
+ARG TrustedIP=127.0.0.1
+ARG ListenerIP
+ARG ListenerPort
+ARG C2_IP
+
+RUN a2enmod remoteip && a2enmod ssl && a2ensite default-ssl && a2enmod proxy && a2enmod proxy_http
+
+#Customisation des fichiers de configuration via les --build-args
+RUN sed -i -r "s:TrustedIP\\$\\$:$TrustedIP:" /etc/apache2/sites-available/000-default.conf
+RUN sed -i -r "s:TrustedIP\\$\\$:$TrustedIP:" /etc/apache2/sites-available/default-ssl.conf
+RUN sed -i -r "s:ListenerPort\\$\\$:$ListenerPort:" /etc/apache2/sites-available/000-default.conf
+RUN sed -i -r "s:ListenerPort\\$\\$:$ListenerPort:" /etc/apache2/sites-available/default-ssl.conf
+RUN sed -i -r "s:C2IP\\$\\$:$C2_IP:" /etc/apache2/sites-available/000-default.conf
+RUN sed -i -r "s:C2IP\\$\\$:$C2_IP:" /etc/apache2/sites-available/default-ssl.conf
+
+CMD ["apachectl", "-D", "FOREGROUND"]

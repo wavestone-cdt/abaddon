@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Abaddon - Infrastructure dashboard{% endblock %}
+
+{% block content %}
+
+        <div class="box box-warning">
+            <div class="box-header with-border">
+              <h3 class="box-title">Infrastructure dashboard</h3>
+            </div>
+
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+          </div>
+          
+            <!-- /.box-header -->
+            <div class="box-body">
+              {% for instance in instances %}
+                  <p>{# print instance #}</p>
+              {% endfor %}
+              {% for distribution in distributions %}
+                  <p>{# print distribution #}</p>
+              {% endfor %}
+            </div>
+            <!-- /.box-body -->
+        </div>
+
+{% endblock %}

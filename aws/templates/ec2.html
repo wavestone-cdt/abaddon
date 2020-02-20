@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}Abaddon - EC2 deployment dashboard{% endblock %}
+
+{% block content %}
+
+        <div class="box box-warning">
+            <div class="box-header with-border">
+              <h3 class="box-title">EC2 deployment dashboard</h3>
+            </div>
+
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+          </div>
+          
+            <div class="box-body">
+              <form role="form" action="deploy-ec2" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">Deploy EC2!</button>
+              </form>
+
+              <table id="ec2-table" class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                  <th>id</th>
+                  <th>launch_time</th>
+                  <th>public_ip_address</th>
+                  <th>public_dns_name</th>
+                  <th>instance_type</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for instance in all_instances %}
+                  <tr>
+                    <td>{{ instance.id }}</td>
+                    <td>{{ instance.launch_time }}</td>
+                    <td>{{ instance.public_ip_address }}</td>
+                    <td>{{ instance.public_dns_name }}</td>
+                    <td>{{ instance.instance_type }}</td>
+                  </tr>
+                {% endfor %}
+                </tbody>
+              </table>
+
+            </div>
+        </div>
+
+        <div class="box box-warning">
+            <div class="box-header with-border">
+              <h3 class="box-title">Gophish deployment dashboard</h3>
+            </div>
+
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+          </div>
+          
+            <div class="box-body">
+              <form role="form" action="deploy-gophish" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label>Deploy Gophish on:</label>
+                  <select class="form-control" name="instance_id">
+                    {% for instance in all_instances %}
+                    <option value={{ instance.id }}>{{ instance.id }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+            </div>
+
+        </div>
+
+{% endblock %}

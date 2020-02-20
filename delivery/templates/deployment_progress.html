@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}Abaddon - Deployment Progression{% endblock %}
+
+
+{% block content %}
+
+        <div class="box box-warning">
+            <div class="box-header with-border">
+              <h3 class="box-title">Title - RedELK deployment progression</h3>
+            </div>
+
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+          </div>
+          
+            <!-- /.box-header -->
+            <div class="box-body">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped active" role="progressbar" style="width:0%">
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-body -->
+        </div>
+
+        <script>
+            function updateProgress (progressUrl) {
+                fetch(progressUrl).then(function(response) {
+                    response.json().then(function(data) {
+                        console.log(data)
+                        if(data.info !== null) {
+                            percent = (data.info.current/data.info.total) * 100;
+                            $(".progress-bar").css("width", percent + "%").text(data.state);
+                            if(percent !== 100){
+                                setTimeout(updateProgress, 500, progressUrl);
+                            } else {
+                                document.location.href='{% url "display_elk_dashboard" %}';
+                            }
+                        } else {
+                                if (data.state === 'PENDING') {
+                                        setTimeout(updateProgress, 100, progressUrl);
+                                } else {
+                                        $(".progress-bar").css("background-color", "orange").text("ERROR")
+                                }
+                        }
+                    });
+                });
+            }
+            var progressUrl = '{% url "progress_deployment" job %}';  // django template usage
+            updateProgress(progressUrl);
+        </script>
+{% endblock %}
+
+

@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}RAT compilation form{% endblock %}
+
+{% block content %}
+
+        <div class="box box-warning">
+            <div class="box-header with-border">
+              <h3 class="box-title">Compile a RAT</h3>
+            </div>
+
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+          </div>
+          
+            <!-- /.box-header -->
+            <div class="box-body">
+              <form role="form" action="" method="POST">
+                 {% csrf_token %}
+
+                <!-- Compilation server address -->
+                <div class="form-group">
+                  <label>Compilation server</label>
+                  <input type="text" name="compilation_server" class="form-control" placeholder="Enter the Windows VM address:port e.g.: 192.168.1.10:4444">
+                </div>
+
+                <!-- Cloudfront distribution address-->
+                <div class="form-group">
+                  <label>Cloudfront distribution</label>
+                  <input type="text" name="cloudfront" class="form-control" placeholder="Enter the cloudfront distribution e.g.: xxxxyyyy.cloudfront.net">
+                </div>
+
+                <!-- Front domain address -->
+                <div class="form-group">
+                  <label>Face domain</label>
+                  <input type="text" name="frontable" class="form-control" placeholder="Enter the face domain for domain fronting e.g. : cdn.bitnami.net">
+                </div>
+
+                <!-- Persistence -->
+                <div class="form-group">
+                  <label>Persistence</label>
+                  <select name="persistent" class="form-control">
+                    <option value='0'selected="selected">No</option>
+                    <option value='1'>Yes</option>
+                  </select>
+                </div>
+
+                <!-- Submit -->
+                <div class="box-footer">
+                  <button type="submit" class="btn btn-primary">Compile</button>
+                </div>
+
+              </form>
+            </div>
+            <!-- /.box-body -->
+          </div>
+
+{% endblock %}

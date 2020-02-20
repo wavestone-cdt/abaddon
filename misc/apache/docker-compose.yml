@@ -1,0 +1,69 @@
+version: '3.7'
+
+services:
+        apache2:
+                restart: always
+                image: abaddon_apache2:0.1
+                container_name: abaddon_apache2
+                stdin_open: true
+                volumes:
+                        - "/srv/prod/a2logs/:/var/log/apache2/"
+                tty: true
+                build:
+                        context: .
+                ports:
+                        - "${http_port}:80"
+                        - "${ssl_port}:443"
+                networks:
+                        - elk
+                secrets:
+                        - apache.crt
+                        - apache.key
+                        - topsecret.crt
+                        - topsecret.key
+
+        filebeat:
+                restart: always
+                container_name: abaddon_apache_filebeat
+                image: filebeat_abaddon:0.1
+                stdin_open: true
+                tty: true
+                build:
+                        context: filebeat/
+                volumes:
+                        - "/srv/prod/a2logs/:/var/log/apache2"
+                        - "/srv/prod/logs/:/logs"
+                networks:
+                        - elk
+
+#         unbound:
+#                 restart: always
+#                 container_name: abaddon_unbound
+#                 image: abaddon_unbound:0.1
+#                 build:
+#                     context: unbound/
+#                 stdin_open: true
+#                 tty: true
+#                 volumes:
+#                     - "/etc/timezon:/etc/timezon:ro"
+#                     - "/etc/localtime:/etc/localtime:ro"
+#                     - "/srv/prod/unbound-conf/:/opt/unbound/etc/unbound/conf.d/"
+#                 networks:
+#                     - elk
+# 
+
+
+secrets:
+        apache.crt:
+                file: ./apache.crt
+        apache.key:
+                file: ./apache.key
+        topsecret.crt:
+                file: ./topsecret.crt
+        topsecret.key:
+                file: ./topsecret.key
+                
+networks:
+    elk:
+        external: true
+        name: elk

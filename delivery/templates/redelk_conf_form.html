@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}Abaddon - RedELK/C2 deployment dashboard{% endblock %}
+
+
+{% block content %}
+
+        <div class="box box-warning">
+            <div class="box-header with-border">
+              <h3 class="box-title">Title - RedELK/C2 deployment panel</h3>
+            </div>
+
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+          </div>
+          
+            <!-- /.box-header -->
+            <div class="box-body">
+                    <p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }} : {{ wizard.steps.current }}</p>
+              <form role="form" action="" method="POST">
+                {% csrf_token %}
+                <table>
+                <!-- https://simpleisbetterthancomplex.com/article/2017/08/19/how-to-render-django-form-manually.html -->
+                {{ wizard.management_form }}
+                {% if wizard.form.forms %}
+                  {{ wizard.form.management_form }}
+                  {% for form in wizard.form.forms %}
+                        {{ form }}
+                  {% endfor %}
+                {% else %}
+                  {{ wizard.form }}
+                {% endif %}  
+                </table>
+                {% if wizard.steps.prev %}
+                <button name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">{% trans "prev step" %}</button>
+                {% endif %}
+                <button type="submit" class="btn btn-primary">Deploy</button>
+              </form>
+            </div>
+            <!-- /.box-body -->
+        </div>
+
+{% endblock %}

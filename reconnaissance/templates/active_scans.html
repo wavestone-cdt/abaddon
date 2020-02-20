@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+
+{% block title %}Abaddon - active scans{% endblock %}
+
+{% block content %}
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+  <link href="{{ STATIC_URL }}css/bootstrap.css" rel="stylesheet" type="text/css"/>
+  <script src="{{ STATIC_URL }}js/bootstrap.js"></script>
+  {{ form.media }}
+</head>
+
+<div class="box body">
+  <form role="form" action="/scans/active-scan/results" method="GET">
+    <div class="box-footer">
+      <p>See actual results<p><br/>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+  </form>
+</div>
+          
+<div class="box box-warning">
+  <div class="box-header with-border">
+    <h3 class="box-title">Launch a new scan</h3>
+  </div>
+  <div class="box-tools pull-right">
+    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+  </div>    
+
+  <div class="box-body">
+    <form role="form" method="POST">
+      {% csrf_token %}
+      {% for field in scanform.visible_fields %}
+      <div class="form-group">
+        <label>{{ field.label_tag }}</label>
+        {{ field }}
+      </div>
+      {% endfor %}
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+
+            <!--
+          <div class="box box-warning">
+            <div class="box-header with-border">
+              <h3 class="box-title">Launch a scan</h3>
+            </div>
+
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+          </div>
+          
+
+            <div class="box-body">
+              <form role="form" action="#" method="POST">
+                {% csrf_token %}
+
+                <div class="form-group">
+                  <label>Title</label>
+                  <input type="text" name="title" class="form-control" placeholder="TEST">
+                </div>
+
+ 
+                <div class="box-footer">
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+
+              </form>
+            </div>
+          </div>
+             -->
+
+<!--
+        <div class="box box-warning">
+            <div class="box-header with-border">
+              <h3 class="box-title">Launch a scan</h3>
+            </div>
+
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+          </div>
+       
+           <div class="box-body">
+              <form role="form" action="#" method="POST">
+                {% csrf_token %}
+
+              <div class="form-group">
+                  <label>Title</label>
+                  <input type="text" name="title" class="form-control" placeholder="Enter ...">
+                </div>
+
+
+                <div class="form-group">
+                  <label>Description</label>
+                  <textarea class="form-control" name="description" rows="3" placeholder="Enter ..."></textarea>
+                </div>
+
+
+                <div class="form-group">
+                  <label>IP targets</label>
+                  <textarea class="form-control" name="targets" rows="3" placeholder="Enter targets, e.g.: scanme.nmap.org, microsoft.com/24, 192.168.0.1; 10.0-255.0-255.1-254"></textarea>
+                </div>
+
+
+                <div class="form-group">
+                  <label for="exampleInputFile">Scan targets input</label>
+                  <input type="file" name="file" id="exampleInputFile">
+
+                  <p class="help-block">Load a target file, compliant with the nmap -iL option</p>
+                </div>
+
+
+                <div class="form-group">
+                  <label>Scan frequency</label>
+                  <select name="scanFrequency" class="form-control">
+                    <option selected="selected">Now</option>
+                    <option>On-demand</option>
+                    <option>Scheduled at</option>
+                  </select>
+                </div>
+
+
+                <div class="form-group">
+                  <label>Scan engines</label>
+                  <div class="checkbox">
+                    <label>
+                      <input name="scanengine" type="checkbox" checked>
+                      NMAP
+                    </label>
+                  </div>
+
+                  <div class="checkbox">
+                    <label>
+                      <input name="scanengine" type="checkbox">
+                      NESSUS
+                    </label>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="nmapOptions">Nmap options</label>
+                  <input type="text" id="nmapOptions" name="nmapOptions" class="form-control" placeholder="-A -T2 -sS">
+                  <p class="help-block">The nmap options you would like to use (be stealthy)</p>
+                </div>
+
+                <div class="box-footer">
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+
+              </form>
+            </div>
+
+          </div>
+    }
+
+-->

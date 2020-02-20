@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}Abaddon - RedELK infrastructure dashboard{% endblock %}
+
+{% block content %}
+
+        <div class="box box-warning">
+            <div class="box-header with-border">
+              <h3 class="box-title">RedELK/C2 dashboard</h3>
+            </div>
+
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+          </div>
+
+          {{ message }}
+          
+          <div class="box-body">
+                {% csrf_token %}
+                <a href="{% url 'launch_configure_elk_instance' %}">Configure a RedELK infrastructure</a>
+                {% if infra_already_deployed_error %}
+                  <div id="infra_already_deployed_error" title="infra_already_deployed_error">
+                     <p style="color:red;">One RedElk infrastructure is already deployed. With the current version of Abaddon, only one infrastructure can be deployed at the time. Please undeploy the current infrastructure before deploying a new one.</p>
+                  </div>
+                {% endif %}
+
+              <h4 class="box-title"> Infrastructure </h4>
+              <table id="nginx-aws-infrastructure-table" class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Redelk_ip</th>
+                  <th>Redelk launch time</th>
+                  <th>Nginx_ip</th>
+                  <th>Nginx_launch_time</th>
+                  <th>Undeploy</th>
+                </tr>
+                </thead>
+                <tbody>
+                  {% for i in infra %}
+                  <tr>
+                    {% for field in i %}
+                     <td>{{ field }}</td>
+                    {% endfor %}
+                    <td>
+                      <form action="/delivery/redelk_undeploy/" method="post">
+                          {% csrf_token %}
+                          <button type="submit" class "btn" name="op_name" value="{{ i.0 }}">Undeploy</button>
+                      </form>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+
+              <h4 class="box-title"> AWS - NGiNX </h4>
+              <table id="nginx-aws-infrastructure-table" class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                  <th>ip</th>
+                  <th>launch_time</th>
+                  <th>id</th>
+                  <th>dns</th>
+                </tr>
+                </thead>
+                <tbody>
+                  {% for i in nginx_aws %}
+                  <tr>
+                    {% for field in i %}
+                     <td>{{ field }}</td>
+                    {% endfor %}
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+
+              <h4 class="box-title"> LOCAL - REDELK - C2</h4>
+              <table id="redelk-local" class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                  <th>ip</th>
+                  <th>launch_time</th>
+                  <th>Kibana access</th>
+                  <th>Listener port</th>
+                  <th>C2 IP</th>
+                </tr>
+                </thead>
+                <tbody>
+                  {% for i in redelk_local %}
+                  <tr>
+                    <td>{{ i.0 }}</td>
+                    <td>{{ i.1 }}</td>
+                    <td><a href="http://{{ i.2 }}">Access to Kibana</a></td>
+                    <td>{{ i.3 }}</td>
+                    <td>{{ i.4 }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+
+            </div>
+        </div>
+
+
+{% endblock %}

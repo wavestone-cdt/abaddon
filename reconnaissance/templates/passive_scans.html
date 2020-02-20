@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+{% block title %}Abaddon - Reconnaissance dashboard{% endblock %}
+
+{% block content %}
+
+        <div class="box box-warning">
+            <div class="box-header with-border">
+              <h3 class="box-title">Infrastructure dashboard</h3>
+            </div>
+
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+          </div>
+          
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div>
+                <h3 class="box-title">Recon-NG</h3>
+                
+                <form method="post" action="recon-ng">
+                  {% csrf_token %}
+                  {{ reconngdomainform.as_p }}
+                  {{ reconngform.as_p }}
+                  <!--<input type="hidden" name="recon-ng_form" value="{{ forloop.counter0 }}">-->
+                  <button type="submit">Run Recon-ng</button>
+                </form>
+
+                <h2>{{msg}}</h2>
+                {%if done%}
+                {%if length%}
+                <h2>{{url}}</h2>
+                <table>
+                  <tr>
+                    <th>Domain</th>
+                    <th>IP address</th>
+                    <th>Module</th>
+                  </tr>
+                  {%for i in raws%}
+                    <tr>
+                      {%for j in i%}
+                        <td> {{j}} </td>
+                      {%endfor%}
+                    </tr>
+                  {%endfor%}
+
+                </table>
+                {% else %}
+                <h2>  {%for i in url%}
+                  {{i}}  &nbsp
+                {%endfor%}</h2>
+
+                  {%for i in raws%}
+
+                    <table>
+                      <tr>
+                        <th>Subdomain</th>
+                        <th>IP address</th>
+                        <th>Module</th>
+                      </tr>
+
+                    {%for j in i%}
+                      <tr>
+
+                        {%for k in j%}
+                        <td> {{k}} </td>
+                        {%endfor%}
+
+                      </tr>
+                    {%endfor%}
+
+                  {%endfor%}
+                  </table>
+              {%endif%}
+              {%endif%}
+              </div>
+
+              <div>
+                <h3 class="box-title">HunterIO</h3>
+              
+                <form method="post" action="hunterio">
+                  {% csrf_token %}
+                  {{ hunterioform.as_p }}
+                  <!--<input type="hidden" name="hunterio_form" value="{{ forloop.counter0 }}">-->
+                  <button type="submit">Get Hunter IO results</button>
+                </form>
+
+                <h2>{{msg}}</h2>
+                {%if hunterio_results%}
+                <h2>{{domain}}</h2>
+                <table>
+                  <tr>
+                    <th>Mail</th>
+                  </tr>
+                  {%for i in hunterio_results%}
+                    <tr>
+                      <td> {{i}} </td>
+                    </tr>
+                  {%endfor%}
+
+                </table>
+                {% else %}
+                <h2>No result, yet</h2>
+                {%endif%}
+              </div>
+
+              <div>
+                <h3 class="box-title">Amass</h3>
+              
+                <form method="post" action="amass">
+                  {% csrf_token %}
+                  {{ amassform.as_p }}
+                  <button type="submit">Get Amass results</button>
+                </form>
+
+                <h2>{{msg}}</h2>
+                {%if amass_results%}
+                <h2>{{domain}}</h2>
+                <p>Go to the reconnaissance/passive_scans/amass_results directory and explore the results manually</p>
+                {% else %}
+                <h2>No result, yet</h2>
+                {%endif%}
+              </div>
+
+            </div>
+            <!-- /.box-body -->
+        </div>
+
+{% endblock %}

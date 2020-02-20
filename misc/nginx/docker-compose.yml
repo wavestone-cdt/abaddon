@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:
+    nginx:
+        restart: always
+        image: abaddon_nginx:0.1
+        stdin_open: true
+        tty: true
+        build:
+            context: .
+        ports:
+            - "80:80"
+            - "443:443"
+                        

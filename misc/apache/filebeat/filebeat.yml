@@ -1,0 +1,24 @@
+filebeat.inputs:
+- type: log
+  enabled: true
+  fields_under_root: true
+  paths:
+    - '/var/log/apache2/access.log'
+    - '/var/log/apache2/*_access.log'
+  fields:
+    infraloguetype: a2redir
+
+
+filebeat.config.modules:
+  path: ${path.config}/modules.d/*.yml
+  reload.enabled: false
+
+setup.template.settings:
+  index.number_of_shards: 3
+
+name: "a2redir"
+fields_under_root: true
+
+output.logstash:
+  hosts: ["logstash:5044"]
+

@@ -1,0 +1,119 @@
+# Lancer d'abord les commandes "add domains" et/ou "add companies" pour définir les noms de domaines sur lesquels chercher
+
+use recon/companies-multi/whois_miner 
+run 
+use recon/netblocks-companies/whois_orgs 
+run 
+use recon/companies-multi/whois_miner 
+run 
+use recon/netblocks-companies/whois_orgs 
+run 
+use recon/companies-multi/whois_miner 
+run 
+use recon/netblocks-companies/whois_orgs 
+run 
+ 
+use recon/companies-multi/github_miner 
+run 
+use recon/companies-profiles/bing_linkedin 
+run 
+ 
+use recon/domains-domains/brute_suffix 
+run 
+use recon/domains-contacts/whois_pocs 
+use 
+use recon/domains-contacts/metacrawler 
+set EXTRACT true 
+run 
+use recon/domains-contacts/pgp_search 
+run 
+use recon/domains-contacts/salesmaple 
+run 
+use recon/domains-hosts/baidu_site 
+run 
+use recon/domains-hosts/bing_domain_api 
+run 
+use recon/domains-hosts/google_site_web 
+run 
+use recon/domains-hosts/yahoo_domain 
+run 
+use recon/domains-hosts/netcraft 
+run 
+use recon/domains-hosts/builtwith 
+run 
+use recon/domains-hosts/shodan_hostname 
+run 
+use recon/domains-hosts/ssl_san 
+run 
+use recon/domains-hosts/vpnhunter 
+run 
+ 
+use recon/domains-hosts/brute_hosts 
+run 
+ 
+use recon/profiles-contacts/dev_diver 
+run 
+use recon/profiles-contacts/linkedin 
+run 
+ 
+use recon/contacts-credentials/hibp_breach 
+run 
+use recon/contacts-credentials/hibp_paste 
+run 
+use recon/contacts-profiles/fullcontact 
+run 
+ 
+use recon/profiles-profiles/linkedin_crawl 
+run 
+use recon/profiles-profiles/namechk 
+run 
+use recon/profiles-profiles/profiler 
+run 
+use recon/profiles-profiles/twitter 
+run 
+ 
+use recon/netblocks-hosts/reverse_resolve 
+run 
+use recon/netblocks-hosts/shodan_net 
+run 
+use recon/netblocks-ports/census_2012 
+run 
+use recon/netblocks-ports/censysio 
+run 
+ 
+use recon/hosts-hosts/resolve 
+run 
+use recon/hosts-hosts/reverse_resolve 
+run 
+use recon/hosts-hosts/ssltools 
+use 
+use recon/ports-hosts/migrate_ports 
+run 
+ 
+use recon/locations-locations/geocode 
+run 
+use recon/locations-locations/reverse_geocode 
+run 
+use recon/locations-pushpins/flickr 
+run 
+use recon/locations-pushpins/instagram 
+run 
+use recon/locations-pushpins/picasa 
+run 
+use recon/locations-pushpins/shodan 
+run 
+use recon/locations-pushpins/twitter 
+run 
+use recon/locations-pushpins/youtube 
+run 
+ 
+use recon/domains-vulnerabilities/punkspider 
+run 
+use recon/domains-vulnerabilities/xssed 
+run 
+use recon/domains-vulnerabilities/xssposed 
+run 
+use recon/repositories-vulnerabilities/gists_search 
+run 
+use recon/repositories-vulnerabilities/github_dorks 
+run
