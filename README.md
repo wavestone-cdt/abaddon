@@ -2,11 +2,9 @@
 
 # Abaddon
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/wavestone-cdt/abaddon/master/LOGO.jpg" width=400 height=400 alt="ABADDON"/>
-</p>
+![Abaddon Logo](LOGO.jpg)
 
-Red team operations involve miscellaneous skills, last several months and are politically sensitive; they require a lot of monitoring, consolidating and caution. Wavestoneís red team operations management software, Abaddon, has been designed to make red team operations faster, more repeatable, stealthier, while including value-added tools and bringing numerous reporting capabilities.
+Red team operations involve miscellaneous skills, last several months and are politically sensitive; they require a lot of monitoring, consolidating and caution. Wavestone‚Äôs red team operations management software, Abaddon, has been designed to make red team operations faster, more repeatable, stealthier, while including value-added tools and bringing numerous reporting capabilities.
 
 **Because**:
 
@@ -22,13 +20,11 @@ Abaddon aims at facilitating red team operations by:
 - **Reducing the time to build an infrastructure**
 - **Enabling complex actions with 1 or 2 clicks**
 - **Enabling easier reporting for long operations**
-- **Reducing the ìOPSEC failureî risk**
+- **Reducing the ‚ÄúOPSEC failure‚Äù risk**
 
 # What you can deploy
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/wavestone-cdt/abaddon/master/command_and_control_architecture.png" width=1200 height=600 alt="C&C infrastructure"/>
-</p>
+![Abaddon Infrastructure](command_and_control_architecture.png)
 
 - Deployed within 30 minutes 
 - Throwable, authenticated, stealth
@@ -75,7 +71,7 @@ This script will:
 
 # Deployment of a C&C infrastructure inside Abaddon
 
-7. If no EC2 instance has been deployed before from Abaddon (it is important that you deploy the EC2 from Abaddon, so that you have access to the SSH key, located in the aws folder), go to the **Delivery/Letís phish!** page. Click on **Deploy EC2!**. Wait for the end of the deployment (you can check inside the terminal used to start Abaddon if the EC2 is ready to be used, all the deployment steps appear in the shell).
+7. If no EC2 instance has been deployed before from Abaddon (it is important that you deploy the EC2 from Abaddon, so that you have access to the SSH key, located in the aws folder), go to the **Delivery/Let‚Äôs phish!** page. Click on **Deploy EC2!**. Wait for the end of the deployment (you can check inside the terminal used to start Abaddon if the EC2 is ready to be used, all the deployment steps appear in the shell).
 
 8. Go to the **misc/apache/default-ssl.conf** file and **UPDATE** the domain name of the EC2 inside the second VirtualHost. To avoid the detection of your infrastructure, buy a new domain name and configure it to point to your EC2. Use this domain name in the Apache configuration file and UPDATE **misc/apache/topsecret.key** and **misc/apache/topsecret.crt** accordingly, which is with the private key and the certificate of your new domain.
 
@@ -116,4 +112,4 @@ Charles IBRAHIM ([@Ibrahimous](https://twitter.com/Ibrahimous))
 - Romain Melchiorre, for integrating lots of great ideas
 - Timon Glasser, for patching SILENTTRINITY, fixing bugs, integrating ideas, and making everything work smoothly during actual engagements!
 - @sbnsec, for currently terraforming all the things!
-- Arnaud SoulliÈ ([@arnaudsoullie](https://twitter.com/arnaudsoullie)), because he overviewed most of the project!
+- Arnaud Soulli√© ([@arnaudsoullie](https://twitter.com/arnaudsoullie)), because he overviewed most of the project!
