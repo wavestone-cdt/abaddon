@@ -22,6 +22,8 @@ Abaddon aims at facilitating red team operations by:
 - **Enabling easier reporting for long operations**
 - **Reducing the “OPSEC failure” risk**
 
+The slides presenting Abaddon at RSAC2020 can be found here: ([Abaddon, the red team angel](https://www.rsaconference.com/usa/agenda/abaddon-the-red-team-angel))
+
 # What you can deploy
 
 ![Abaddon Infrastructure](command_and_control_architecture.png)
@@ -48,9 +50,9 @@ Abaddon aims at facilitating red team operations by:
 
 `aws configure`
 
-3. Open a terminal in the folder abaddon/setup.
+3. Open a terminal in the abaddon/ subdirectory, and move settings.py.example to settings.py.
 
-4. Launch the following command
+4. Launch the following command in the abaddon/setup folder:
 
 `bash install.sh`
 

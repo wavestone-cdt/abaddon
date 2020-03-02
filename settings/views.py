@@ -11,7 +11,7 @@ import json, csv
 
 # Create your views here.
 
-
+"""
 def show_settings_menu(request):
     users = User.objects.all()
     settings = Setting.objects.all().order_by("key")
@@ -79,3 +79,4 @@ def export_settings_api(request):
 
 def import_settings_api(request):
     pass
+"""

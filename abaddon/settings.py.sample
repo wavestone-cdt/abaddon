@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '<your_secret_key'
+SECRET_KEY = 'yourSuperSecretHere'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -33,7 +33,6 @@ LOGGING_LEVEL = "WARNING,ERROR,DEBUG"
 # Application definition
 
 INSTALLED_APPS = [
-    'aws',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,26 +40,21 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'dashboard',
-    #'rest_framework',
-    #'datetimewidget',
-    'engines',
+    'reconnaissance',
+    'delivery',
+    'aws',
+    'weaponization',
     'exploitation',
-    'findings',
-    'assets',
-    'users',
-    'scans',
-    'events',
-    'rules',
-    'search',
-    'reportings',
     'settings',
-    #'debug_toolbar',
-    #'django_celery_results',
     'django_celery_beat',
+    'django_celery_results',
+    #formtools provide several tools to make form easier
+    'formtools',
     # The general purpose templates - ALWAYS INT THE END (coz you need to override it)
     'django_adminlte',
     # Optional: Skin for the admin interface - ALWAYS INT THE END (coz you need to override it)
     'django_adminlte_theme',
+    'django_tables2'
 ]
 
 MIDDLEWARE = [
@@ -88,9 +82,6 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
-            'libraries': {
-                'patrowl_tags': 'templatetags.common_tags'
-            }
         },
     },
 ]
@@ -108,9 +99,9 @@ DATABASES = {
     #}
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'abaddondb',                      
-        'USER': 'red-teamer',
-        'PASSWORD': '<yourpassword',
+        'NAME': 'abaddondb',                
+        'USER': 'yourUserHere',
+        'PASSWORD': 'yourPasswordHere',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
@@ -163,18 +154,19 @@ LOGIN_REQUIRED_URLS = (
     r'/(.*)$',
 )
 LOGIN_REQUIRED_URLS_EXCEPTIONS = (
-    r'/login(.*)$',
-    r'/logout(.*)$',
-    r'/home$',
-    r'/signup$',
+    r'/accounts/login(.*)$',
+    r'/accounts/logout(.*)$',
+    r'/home(.*)$',
+    #r'/signup$',
 )
 
-LOGIN_URL = '/login/'
-LOGOUT_URL = '/logout/'
-#LOGIN_REDIRECT_URL = '/dashboard'
-#Modified
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
+LOGIN_URL = '/accounts/login/'
+LOGOUT_URL = '/accounts/logout/'
+#LOGIN_REDIRECT_URL = 'home'
+#LOGOUT_REDIRECT_URL = 'login'
+#https://github.com/sibtc/django-auth-tutorial-example/blob/master/mysite/settings.py
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
 
 APPEND_SLASH = True
 
@@ -217,6 +209,7 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Europe/Paris'
+CELERY_BROKER_URL = 'amqp://localhost'
 
 # Email settings
 EMAIL_USE_TLS = True
