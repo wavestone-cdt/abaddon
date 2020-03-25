@@ -1,0 +1,23 @@
+enable_ufw_firewall: true
+
+install_packages:
+  - postfix
+  - unzip
+  - python2
+  - python-bcrypt
+  - sqlite3
+  - libsqlite3-dev
+  - python3-bcrypt
+
+hostname: gophish
+gophish_user: ubuntu
+postfix_hostname: gophish
+postfix_inet_interfaces: 127.0.0.1
+
+# Required if changing /etc/hostname to something different.
+reboot_box: true
+
+jq: "[?contains(browser_download_url, 'linux-64bit.zip')].browser_download_url "
+gophish_pass: "{{ lookup('password', '/dev/null length=15 chars=ascii_letters') }}"
+
+
