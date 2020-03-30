@@ -42,19 +42,34 @@ The slides presenting Abaddon at RSAC2020 can be found here: ([Abaddon, the red 
 
 # Installing and launching Abaddon
 
-1. Abaddon has been tested on Debian, LUbuntu, and of course KALI Linux (latest tests have been performed on the 5.4.0 amd64 version).
+Abaddon has been tested on Debian, LUbuntu, and of course KALI Linux (latest tests have been performed on the 5.4.0 amd64 version).
+You also need to have Internet access, and  a public IP address if you want to deploy your C&C server locally.
 
-2. You also need to have Internet access, and  a public IP address if you want to deploy your C&C server locally.
+1. Clone this repository and move inside the repository folder
 
-3. Create the files ~/.aws/credentials and ~/.aws/config with your AWS credentials and configuration, using the following command:
+```sh
+git clone git@github.com:wavestone-cdt/abaddon.git
+cd abaddon
+```
 
-`aws configure`
+2. Create the files ~/.aws/credentials and ~/.aws/config with your AWS credentials and configuration, using the following command:
 
-3. Open a terminal in the abaddon/ subdirectory, and move settings.py.example to settings.py.
+```sh
+aws configure
+```
+
+3. Move settings.py.sample to settings.py. Add change the database user password (This password will be asked durring the setup process)
+
+```sh
+mv abaddon/settings.py.sample abaddon/settings.py
+sed -i 's/yourPasswordHere/<databasepassword>/g' abaddon/settings.py
+```
 
 4. Launch the following command in the abaddon/setup folder:
 
-`bash install.sh`
+```sh
+bash setup/install.sh
+```
 
 This script will:
 
@@ -65,9 +80,11 @@ This script will:
 - Apply Django migrations
 - Create a superuser for the Django application, that will be used to connect to the graphical interface of Abaddon.
 
-**Go back in abaddon folder and start the Red Team Angel !**
+**Start the Red Team Angel !**
 
-`bash abaddon.sh`
+```sh
+bash abaddon.sh
+```
 
 **Open a browser, and go to the URL 127.0.0.1:8000 (connect with the Django superuser credentials created during the installation).**
 
