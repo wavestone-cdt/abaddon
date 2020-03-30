@@ -1,0 +1,162 @@
+- name: Check if the password is defined
+  stat:
+    path: /home/{{ gophish_user }}/password.txt
+  register: password_set
+
+- copy: 
+    content: "{{ gophish_pass }}" 
+    dest: /home/{{ gophish_user }}/password.txt
+  when: password_set.stat.exists == False
+
+- name: Read pwd
+  slurp:
+    src: /home/{{ gophish_user }}/password.txt
+  register: pwd
+
+- debug: 
+    msg: "The admin password is : {{ pwd['content'] }}"
+#  when: password_set.stat.exists == False
+
+
+- name: Change /etc/hostname
+  hostname:
+    name: "{{ hostname }}"
+
+- name: Update repositories cache and install "ufw" package
+  apt:
+    name: ufw
+    update_cache: yes
+
+- name: Allow TCP 22 for SSH.
+  ufw:
+    rule: allow
+    port: "22"
+    proto: tcp
+
+- name: Allow TCP 80 for Gophish.
+  ufw:
+    rule: allow
+    port: "80"
+    proto: tcp
+
+- name: Allow TCP 443 for Gophish.
+  ufw:
+    rule: allow
+    port: "443"
+    proto: tcp
+
+- name: Allow TCP 3333 for Gophish.
+  ufw:
+    rule: allow
+    port: "3333"
+    proto: tcp
+
+- name: Enable ufw.
+  ufw:
+    state: enabled
+    policy: deny
+  when: enable_ufw_firewall
+
+- name: Install specified packages.
+  apt:
+    pkg: "{{ install_packages }}"
+    state: latest
+
+- name: Update postfix main.cf configuration file.
+  template:
+    src: main.cf.j2
+    dest: /etc/postfix/main.cf
+    backup: yes
+    owner: root
+    group: root
+    mode: 0644
+
+
+- name: Restart postfix.
+  service:
+    name: postfix
+    state: restarted
+
+- name: Ensure postfix is started and enabled at boot.
+  service:
+    name: postfix
+    state: started
+    enabled: yes
+
+- name: Download latest Gophish .zip file
+  uri:                                                               
+    url: https://api.github.com/repos/gophish/gophish/releases/latest
+    return_content: true                                             
+  register: json_reponse                                             
+
+- get_url:
+    url: "{{ json_reponse.json.assets | to_json | from_json | json_query(jq) | join('#') }}"
+    dest: ./gophish.zip
+
+- name: Create directory for gophish.
+  file:
+    path: "/home/{{ gophish_user }}/gophish"
+    state: directory
+    mode: 0755
+    owner: "{{ gophish_user }}"
+    group: "{{ gophish_user }}"
+
+- name: Unzip gophish file.
+  unarchive:
+    src: "/home/{{ gophish_user }}/gophish.zip"
+    dest: "/home/{{ gophish_user }}/gophish"
+    remote_src: True  # File is on target server and not locally.
+    owner: "{{ gophish_user }}"
+    group: "{{ gophish_user }}"
+
+- name: Change ownership of Gophish folder and files.
+  file:
+    path: /home/{{ gophish_user }}/gophish
+    owner: "{{ gophish_user }}"
+    group: "{{ gophish_user }}"
+    recurse: True
+
+- name: Allow gophish binary to bind to privileged ports using setcap.
+  shell: setcap CAP_NET_BIND_SERVICE=+eip /home/{{ gophish_user }}/gophish/gophish
+
+- name: Copy config.json file.
+  copy:
+    src: files/config.json
+    dest: "/home/{{ gophish_user }}/gophish/config.json"
+    owner: "{{ gophish_user }}"
+    group: "{{ gophish_user }}"
+    mode: 0644
+
+- name: Ensure gophish service file is properly set
+  template:
+    src: gophish.service.j2
+    dest: /etc/systemd/system/gophish.service
+    mode: 644
+
+- name: Ensure systemd to reread configs
+  systemd:
+    daemon_reload: yes
+
+- name: Ensure gophish is properly started
+  service:
+    name: gophish.service
+    state: started
+    enabled: yes
+
+- name: Uploading passcord changing scrit
+  template:
+    src: password.sh.j2
+    dest: /home/{{ gophish_user }}/password.sh
+    backup: yes
+    owner: ubuntu
+    group: ubuntu
+    mode: 0644
+    force: no
+
+- name: Create hash of the password for Gophish
+  command: bash /home/{{ gophish_user }}/password.sh &
+  args:
+    creates: "/home/{{ gophish_user }}/password_enc"
+
+- debug: 
+    msg: "The password is : {{ pwd['content'] }}"
