@@ -91,3 +91,10 @@ db.sqlite3
 
 *.key
 *.keys
+
+# Abaddon spesifics
+nmaptocsv/
+setup/nmaptocsv/
+exploitation/migrations/0001_initial.py
+settings/migrations/0002_auto_20200327_1132.py
+dashboard/migrations/0001_initial.py

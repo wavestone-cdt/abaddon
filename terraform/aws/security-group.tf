@@ -1,6 +1,6 @@
 # Create security group with web and ssh access
 resource "aws_security_group" "web_server" {
-  name = "${var.server_name}"
+  name = terraform.workspace 
 
   ingress {
     protocol    = "tcp"

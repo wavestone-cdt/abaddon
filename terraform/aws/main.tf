@@ -3,10 +3,10 @@
 
 # Create web server
 resource "aws_instance" "web_server" {
-  ami                    = "${data.aws_ami.ubuntu.id}"
+  ami                    = data.aws_ami.ubuntu.id
   vpc_security_group_ids = ["${aws_security_group.web_server.id}"]
   instance_type          = "t2.micro"
-  key_name               = "${var.ssh_key_name}"
+  key_name               = var.ssh_key_name
   tags = {
     Name = "${terraform.workspace}"
   }
@@ -18,15 +18,15 @@ resource "aws_instance" "web_server" {
 
   connection {
     user        = "ubuntu"
-    host        = "${self.public_ip}"
-    private_key = "${file("~/.ssh/id_rsa")}"
+    host        = self.public_ip
+    private_key = file("~/.ssh/id_rsa")
   }
 
  provisioner "local-exec" {
   command = <<EOT
     sleep 20;
     export ANSIBLE_HOST_KEY_CHECKING=False;
-    ansible-playbook -u ${var.ansible_user}  -i ${aws_instance.web_server.public_ip}, ../../ansible/gophish.yml > /dev/tty
+    ansible-playbook -u ${var.ansible_user}  -i ${aws_instance.web_server.public_ip}, ../../ansible/gophish.yml -e uuid=${terraform.workspace} > /dev/tty
     EOT
    }
   }
