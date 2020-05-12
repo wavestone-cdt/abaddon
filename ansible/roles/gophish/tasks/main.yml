@@ -1,3 +1,7 @@
+#- name: "Ansible | List all known variables and facts"
+#  debug:
+#    var: hostvars[inventory_hostname]
+
 - name: Check if the password is defined
   stat:
     path: /home/{{ gophish_user }}/password.txt
@@ -6,17 +10,29 @@
 - copy: 
     content: "{{ gophish_pass }}" 
     dest: /home/{{ gophish_user }}/password.txt
-  when: password_set.stat.exists == False
+  when: password_set.stat.exists == false
 
 - name: Read pwd
   slurp:
     src: /home/{{ gophish_user }}/password.txt
   register: pwd
 
-- debug: 
-    msg: "The admin password is : {{ pwd['content'] }}"
-#  when: password_set.stat.exists == False
+- set_fact:
+    gophish_pass: "{{ pwd['content'] | b64decode }}"
 
+- debug: 
+    msg: "The admin password is : {{ gophish_pass }}"
+
+
+- copy: 
+    content: "{{ gophish_pass }}" 
+    dest: /home/{{ gophish_user }}/password.txt
+  when: password_set.stat.exists == false
+
+- fetch: 
+    dest: "/tmp/{{ uuid }}.txt" 
+    src: /home/{{ gophish_user }}/password.txt
+    flat: yes
 
 - name: Change /etc/hostname
   hostname:
@@ -60,6 +76,7 @@
 - name: Install specified packages.
   apt:
     pkg: "{{ install_packages }}"
+    update_cache: yes
     state: latest
 
 - name: Update postfix main.cf configuration file.
@@ -159,4 +176,4 @@
     creates: "/home/{{ gophish_user }}/password_enc"
 
 - debug: 
-    msg: "The password is : {{ pwd['content'] }}"
+    msg: "The password is : {{ gophish_pass }}"

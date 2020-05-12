@@ -8,7 +8,7 @@ variable ssh_key_name {
   default = "user"
 }
 variable ami {
-  default = "ubuntu/images/hvm-ssd/ubuntu-disco-19.04-amd64-server-*"
+  default = "ubuntu/images/hvm-ssd/ubuntu-eoan-19.10-amd64-server-*"
 }
 variable ansible_user {
   default = "ubuntu"
