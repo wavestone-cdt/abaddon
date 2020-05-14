@@ -50,7 +50,7 @@ sudo cp $abaddonPATH/nmaptocsv/nmaptocsv.py /usr/local/bin/nmaptocsv
 
 echo -e "\n\nPATCHING SIX\n\n"
 #Patch one dependencie, and add ~/.local/bin to PATH
-sed -i 's/django.utils.six/six/g' ~/.local/lib/python3.7/site-packages/datetimewidget/widgets.py
+sed -i 's/django.utils.six/six/g' $(python3 -m site --user-site)/datetimewidget/widgets.py
 echo -e "export PATH=\$PATH:~/.local/bin" >> ~/.bashrc
 #Other dependencies
 
