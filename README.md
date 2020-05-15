@@ -48,7 +48,7 @@ You also need to have Internet access, and  a public IP address if you want to d
 1. Clone this repository and move inside the repository folder
 
 ```sh
-git clone git@github.com:wavestone-cdt/abaddon.git
+git clone git@github.com/wavestone-cdt/abaddon.git
 cd abaddon
 ```
 
