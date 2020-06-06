@@ -6,7 +6,7 @@ boto3==1.9.214
 celery==4.3.0
 certifi==2019.6.16
 chardet==3.0.4
-Django==2.2.10
+Django==2.2.13
 django-adminlte2==0.4.1
 django-celery-beat==1.5.0
 django-celery-inspect==0.2.1
