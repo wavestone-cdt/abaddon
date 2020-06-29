@@ -45,6 +45,14 @@ The slides presenting Abaddon at RSAC2020 can be found here: ([Abaddon, the red 
 Abaddon has been tested on Debian, LUbuntu, and of course KALI Linux (latest tests have been performed on the 5.4.0 amd64 version).
 You also need to have Internet access, and  a public IP address if you want to deploy your C&C server locally.
 
+Note that to configure your AWS environment, the easiest way is probably to install the aws-cli like indicated here: https://docs.aws.amazon.com/fr_fr/cli/latest/userguide/install-cliv2-linux.html
+
+```sh
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+```
+
 1. Clone this repository and move inside the repository folder
 
 ```sh
