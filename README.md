@@ -22,7 +22,7 @@ Abaddon aims at facilitating red team operations by:
 - **Enabling easier reporting for long operations**
 - **Reducing the “OPSEC failure” risk**
 
-The slides presenting Abaddon at RSAC2020 can be found here: ([Abaddon, the red team angel](https://www.rsaconference.com/usa/agenda/abaddon-the-red-team-angel))
+The slides presenting Abaddon at RSAC2020 can be found here: ([Abaddon, the red team angel](https://www.rsaconference.com/usa/us-2020/agenda/abaddon-the-red-team-angel))
 
 # What you can deploy
 
