@@ -18,7 +18,7 @@ sudo apt-get install -y software-properties-common
 sudo apt-get upgrade -y
 
 echo -e "\n\nINSTALLING POSTGRESQL AND DOCKER\n\n"
-sudo aptitude install postgresql postgresql-client pgadmin3 build-essential python2.7-dev git curl rabbitmq-server python-psycopg2 libpq-dev recon-ng -ry
+sudo aptitude install postgresql postgresql-client pgadmin3 build-essential python2.7-dev git curl rabbitmq-server libpq-dev recon-ng -ry
 sudo /etc/init.d/postgresql start
 sudo apt-get remove docker docker-engine docker.io -y
 sudo aptitude install docker-ce docker-ce-cli containerd.io docker-compose -ry
